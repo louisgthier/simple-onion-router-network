@@ -12,6 +12,8 @@ export async function user(userId: number) {
   _user.use(express.json());
   _user.use(bodyParser.json());
 
+  let lastReceivedMessage: string | null = null;
+
   // GET /status
   _user.get("/status", (req, res) => {
     res.send("live");
@@ -19,12 +21,19 @@ export async function user(userId: number) {
 
   // GET /getLastReceivedMessage
   _user.get("/getLastReceivedMessage", (req, res) => {
-    res.json({ result: null });
+    res.json({ result: lastReceivedMessage });
   });
 
   // GET /getLastSentMessage
   _user.get("/getLastSentMessage", (req, res) => {
     res.json({ result: null });
+  });
+
+  // POST /message
+  _user.post("/message", (req, res) => {
+    const { message, destinationUserId }: SendMessageBody = req.body;
+    lastReceivedMessage = message;
+    res.send("success");
   });
 
   const server = _user.listen(BASE_USER_PORT + userId, () => {

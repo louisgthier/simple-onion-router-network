@@ -22,6 +22,8 @@ import {
 } from "../../src/crypto";
 const { validateEncryption } = require("./utils");
 
+import { log } from "console";
+
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 async function closeAllServers(
